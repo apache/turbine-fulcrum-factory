@@ -101,12 +101,7 @@ public class DefaultFactoryService
     {
         return (Class) primitiveClasses.get(type);
     }
-    /**
-     * Constructs a Factory Service.
-     */
-    public DefaultFactoryService()
-    {
-    }
+
     /**
      * Gets an instance of a named class.
      *
@@ -419,6 +414,7 @@ public class DefaultFactoryService
                 }
                 catch (ClassNotFoundException xx)
                 {
+                    // continue
                 }
             }
             /* Give up. */
