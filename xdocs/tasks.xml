@@ -34,7 +34,7 @@
        <p>
           <ul>
            <li>
-              Need to test using the configuratio values.  Currently it just uses the default Classloader.
+              Need to test using the configuration values.  Currently it just uses the default Classloader.
             </li>
            <li>
               Document using different classloaders.

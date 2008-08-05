@@ -22,7 +22,8 @@
 
   <properties>
     <title>Factory Component</title>
-    <author email="epugh@upstate.com">Eric PUgh</author>
+    <author email="epugh@upstate.com">Eric Pugh</author>
+    <author email="tv@apache.org">Thomas Vandahl</author>
   </properties>
 
   <body>
@@ -47,42 +48,72 @@ The service provides the following benefits compared to Class.forName():
   </section>
 
 <section name="Configuration">
-
-    <p>
-      First, here is the role configuration.
-    </p>
-
-<source>
-<![CDATA[
-   <role
+    <subsection name="Role Configuration">
+      <source><![CDATA[
+    <role
         name="org.apache.fulcrum.factory.FactoryService"
         shorthand="factory"
         default-class="org.apache.fulcrum.factory.DefaultFactoryService"/>
-]]>
-</source>
+      ]]></source>
+    </subsection>
 
-  <p>
-    There is configuration values for classloaders, still need to add.
-  </p>
-<source>
+    <subsection name="Component Configuration">
+      <table>
+        <tr>
+          <th>Item</th>
+          <th>Datatype</th>
+          <th>Cardinality</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>classloader</td>
+          <td>String</td>
+          <td>[0..n]</td>
+          <td>
+            A class loader. Class loaders will be tried in sequence when
+            trying to create an object instance.
+          </td>
+        </tr>
+        <tr>
+          <td>object-factory</td>
+          <td>Complex</td>
+          <td>[0|1]</td>
+          <td>
+            The parent element for object factories. Sub-elements define
+            factories for certain class names. You can define one
+            <code>default</code> factory that will be used if no others
+            match. See the configuration example below.
+          </td>
+        </tr>
+      </table>
+    </subsection>
 
-<![CDATA[
-    <factory/>
-]]>
-</source>
-
+    <subsection name="Component Configuration Example">
+      <source><![CDATA[
+    <factory>
+        <classloader>java.net.URLClassLoader</classloader>
+        <object-factory>
+            <javax.xml.parsers.DocumentBuilder>
+                org.foo.xml.DomBuilderFactory
+            </javax.xml.parsers.DocumentBuilder>
+            <default>
+                org.some.default.Factory
+            </default>
+        </object-factory>
+    </factory>
+      ]]></source>
+    </subsection>
   </section>
 
   <section name="Usage">
+    <p>
+      In Turbine, the Factory Service is currently only used internally by the Pool Service.
+      Applications can also use the service instead of Class.forName() and for unifying
+      initialization, configuration and access to vendor specific object factories.
+      The following is a simplified example of a customized DOM parser factory:
+    </p>
 
-<p>
-In Turbine, the Factory Service is currently only used internally by the Pool Service.
-Applications can also use the service instead of Class.forName() and for unifying
-initialization, configuration and access to vendor specific object factories.
-The following is a simplified example of a customized DOM parser factory:
-</p>
-
-<source><![CDATA[
+    <source><![CDATA[
 package org.foo.xml;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -170,22 +201,19 @@ public class DomBuilderFactory implements Factory
 }
 ]]></source>
 
-<p>
-The customized DOM parser factory must be specified in Turbine Resources before it can be used:
-</p>
+    <p>
+      The customized DOM parser factory must be specified in the component 
+      configuration like in the configuration example above before it can 
+      be used.
+    </p>
 
-<source><![CDATA[
-services.FactoryService.factory.javax.xml.parsers.DocumentBuilder=org.foo.xml.DomBuilderFactory
-]]></source>
+    <p>
+    A DOM parser can now be instantiated with the following code fragment:
+    </p>
 
-<p>
-A DOM parser can now be instantiated with the following code fragment:
-</p>
-
-<source><![CDATA[
+    <source><![CDATA[
 // Access the service singleton.
-FactoryService service = (FactoryService)
-    TurbineServices.getInstance().getService(FactoryService.SERVICE_NAME);
+FactoryService service = (FactoryService)container.lookup(FactoryService.ROLE);
 
 // Create a new DOM parser.
 DocumentBuilder parser =
@@ -193,6 +221,5 @@ DocumentBuilder parser =
 ]]></source>
 
   </section>
-
 </body>
 </document>
