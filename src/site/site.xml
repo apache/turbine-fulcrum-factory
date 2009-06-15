@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -17,31 +17,14 @@
  specific language governing permissions and limitations
  under the License.
 -->
-<document>
-  <properties>
-    <title>Fulcrum Factory</title>
-    <author email="epugh@opensourceconnections.com">Eric Pugh</author>
-  </properties>
+<project
+  name="Fulcrum Factory"
+  href="http://turbine.apache.org/fulcrum/fulcrum-factory/">
 
   <body>
-    <release version="1.0.4" date="2009-06-16">
-      <action dev="tv" type="add">
-        Added a Maven-2 build
-      </action>
-    </release>
-    <release version="1.0.3" date="2004-11-24">
-      <action dev="epugh" type="update" due-to="Kostyantyn Shchekotykhin">
-        Merge api and impl jars into one project.
-      </action>
-      <action dev="epugh" type="update">
-      	Clean up dependencies.  Use TestContainer.
-      </action>
-    </release>
-	<release version="1.0.2" date="">
-      <action dev="epugh" type="update">
-      	Update to use Merlin 3.3.0
-      </action>
-    </release>
+    <menu name="Overview">
+      <item name="Main"                 href="/index.html"/>
+      <item name="ToDos"                href="/tasks.html" />
+    </menu>
   </body>
-</document>
-
+</project>
