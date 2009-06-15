@@ -7,16 +7,16 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>fulcrum-factory</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5-SNAPSHOT</version>
   <name>Fulcrum Factory</name>
   <inceptionYear>2005</inceptionYear>
   <description>Fulcrum Factory Service</description>
   <url>http://turbine.apache.org/fulcrum/fulcrum-factory</url>
 		
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/fulcrum/tags/FULCRUM_FACTORY_1_0_4</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/fulcrum/tags/FULCRUM_FACTORY_1_0_4</developerConnection>
-    <url>http://svn.apache.org/viewcvs/turbine/fulcrum/tags/FULCRUM_FACTORY_1_0_4</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/fulcrum/trunk/factory/</connection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/fulcrum/trunk/factory/</developerConnection>
+    <url>http://svn.apache.org/viewcvs/turbine/fulcrum/trunk/factory/</url>
   </scm>
 
   <distributionManagement>
