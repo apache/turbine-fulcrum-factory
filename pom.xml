@@ -33,7 +33,7 @@
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/fulcrum/trunk/factory/</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/fulcrum/trunk/factory/</developerConnection>
-    <url>http://svn.apache.org/viewcvs/turbine/fulcrum/trunk/factory/</url>
+    <url>http://svn.apache.org/viewvc/turbine/fulcrum/trunk/factory/</url>
   </scm>
 
   <distributionManagement>
