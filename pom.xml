@@ -23,6 +23,7 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
+  <groupId>org.apache.fulcrum</groupId>
   <artifactId>fulcrum-factory</artifactId>
   <version>1.0.5-SNAPSHOT</version>
   <name>Fulcrum Factory</name>
