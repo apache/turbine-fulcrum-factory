@@ -37,14 +37,6 @@
     <url>http://svn.apache.org/viewvc/turbine/fulcrum/trunk/factory/</url>
   </scm>
 
-  <distributionManagement>
-    <site>
-      <id>apache.website</id>
-      <name>Fulcrum Website</name>
-      <url>${fulcrum.deployment.protocol}://people.apache.org/www/turbine.apache.org/fulcrum/fulcrum-factory/</url>
-    </site>    
-  </distributionManagement>
-	
   <developers>
     <developer>
       <name>Eric Pugh</name>
@@ -108,23 +100,38 @@
 
   <profiles>
     <profile>
-      <id>rc</id>
-      <distributionManagement>
-        <!-- Cannot define in parent ATM, see COMMONSSITE-26 -->
-        <site>
-          <id>apache.website</id>
-          <name>Apache Fulcrum Release Candidate Staging Site</name>
-          <url>${fulcrum.deployment.protocol}://people.apache.org/www/turbine.apache.org/builds/fulcrum/${fulcrum.componentid}/${fulcrum.release.version}/${fulcrum.rc.version}/site</url>
-        </site>
-      </distributionManagement>
+      <id>apache-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <!-- build the source and binary distribution packages -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>fulcrum-source-release-assembly</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>single</goal>
+                </goals>
+                <configuration>
+                  <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+                  <descriptors>
+                    <descriptor>src/assembly/binaries.xml</descriptor>
+                    <descriptor>src/assembly/source.xml</descriptor>
+                  </descriptors>
+                  <tarLongFileFormat>gnu</tarLongFileFormat>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
-  
+
   <properties>
-    <!-- This bits are used for the staging directory -->
-    <fulcrum.release.version>1.0.4</fulcrum.release.version>
-    <fulcrum.rc.version>RC1</fulcrum.rc.version>  
-    <fulcrum.deployment.protocol>scpexe</fulcrum.deployment.protocol>
+    <turbine.site.path>fulcrum/fulcrum-factory</turbine.site.path>
   </properties>  
 	
 </project>
