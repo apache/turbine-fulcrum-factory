@@ -1,5 +1,7 @@
 package org.apache.fulcrum.factory;
 
+import org.apache.avalon.framework.service.ServiceException;
+
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -47,7 +49,7 @@ public interface FactoryService
 	* @return the instance.
 	* @throws ServiceException if instantiation fails.
 	*/
-   public Object getInstance(Class clazz)
+   <T> T getInstance(Class<T> clazz)
 	   throws FactoryException;
 
     /**
@@ -57,7 +59,7 @@ public interface FactoryService
      * @return the instance.
      * @throws ServiceException if instantiation fails.
      */
-    public Object getInstance(String className)
+    <T> T getInstance(String className)
         throws FactoryException;
 
     /**
@@ -71,7 +73,7 @@ public interface FactoryService
      * @return the instance.
      * @throws ServiceException if instantiation fails.
      */
-    public Object getInstance(String className,
+    <T> T getInstance(String className,
                               ClassLoader loader)
         throws FactoryException;
 
@@ -86,7 +88,7 @@ public interface FactoryService
      * @return the instance.
      * @throws ServiceException if instantiation fails.
      */
-    public Object getInstance(String className,
+    <T> T getInstance(String className,
                               Object[] params,
                               String[] signature)
         throws FactoryException;
@@ -106,7 +108,7 @@ public interface FactoryService
      * @return the instance.
      * @throws ServiceException if instantiation fails.
      */
-    public Object getInstance(String className,
+    <T> T getInstance(String className,
                               ClassLoader loader,
                               Object[] params,
                               String[] signature)
@@ -119,7 +121,7 @@ public interface FactoryService
      * @return true if class loaders are supported, false otherwise.
      * @throws ServiceException if test fails.
      */
-    public boolean isLoaderSupported(String className)
+    boolean isLoaderSupported(String className)
         throws FactoryException;
 
     /**
@@ -133,7 +135,7 @@ public interface FactoryService
      * of a different class loader.
      * @throws ClassNotFoundException if any of the classes is not found.
      */
-    Class[] getSignature(Class clazz,
+    Class<?>[] getSignature(Class<?> clazz,
             Object params[],
             String signature[])
             throws ClassNotFoundException;

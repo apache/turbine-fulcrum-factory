@@ -1,6 +1,5 @@
 package org.apache.fulcrum.factory;
 
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,8 +19,6 @@ package org.apache.fulcrum.factory;
  * under the License.
  */
 
-
-
 /**
  * Factory is an interface for object factories. Object factories
  * can be registered with the Factory Service to support customized
@@ -34,7 +31,7 @@ package org.apache.fulcrum.factory;
  * @author <a href="mailto:mcconnell@apache.org">Stephen McConnell</a>
  * @version $Id$
  */
-public interface Factory
+public interface Factory<T>
 {
     /**
      * Initializes the factory. This method is called by
@@ -43,8 +40,7 @@ public interface Factory
      * @param className the name of the production class
      * @throws FactoryException if initialization fails.
      */
-    public void init(String className)
-        throws FactoryException;
+    void init(String className) throws FactoryException;
 
     /**
      * Gets an instance of a class.
@@ -52,8 +48,7 @@ public interface Factory
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    public Object getInstance()
-        throws FactoryException;
+    T getInstance() throws FactoryException;
 
     /**
      * Gets an instance of a class using a specified class loader.
@@ -65,8 +60,7 @@ public interface Factory
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    public Object getInstance(ClassLoader loader)
-        throws FactoryException;
+    T getInstance(ClassLoader loader) throws FactoryException;
 
     /**
      * Gets an instance of a named class.
@@ -78,8 +72,7 @@ public interface Factory
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    public Object getInstance(Object[] params,
-                              String[] signature)
+    T getInstance(Object[] params, String[] signature)
         throws FactoryException;
 
     /**
@@ -96,9 +89,7 @@ public interface Factory
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    public Object getInstance(ClassLoader loader,
-                              Object[] params,
-                              String[] signature)
+    T getInstance(ClassLoader loader, Object[] params, String[] signature)
         throws FactoryException;
 
     /**
@@ -106,5 +97,5 @@ public interface Factory
      *
      * @return true if class loaders are supported, false otherwise.
      */
-    public boolean isLoaderSupported();
+    boolean isLoaderSupported();
 }

@@ -21,11 +21,13 @@ package org.apache.fulcrum.factory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.avalon.framework.activity.Disposable;
 import org.apache.avalon.framework.activity.Initializable;
 import org.apache.avalon.framework.configuration.Configurable;
 import org.apache.avalon.framework.configuration.Configuration;
@@ -48,7 +50,7 @@ import org.apache.fulcrum.factory.utils.ObjectInputStreamForContext;
  */
 public class DefaultFactoryService
     extends AbstractLogEnabled
-    implements FactoryService, Configurable, Initializable
+    implements FactoryService, Configurable, Initializable, Disposable
 {
     protected boolean initialized = false;
     //private boolean disposed = false;
@@ -67,9 +69,10 @@ public class DefaultFactoryService
     /**
      * Primitive classes for reflection of constructors.
      */
-    private static HashMap primitiveClasses;
+    private static HashMap<String, Class<?>> primitiveClasses;
+
     {
-        primitiveClasses = new HashMap(8);
+        primitiveClasses = new HashMap<String, Class<?>>(8);
         primitiveClasses.put(Boolean.TYPE.toString(), Boolean.TYPE);
         primitiveClasses.put(Character.TYPE.toString(), Character.TYPE);
         primitiveClasses.put(Byte.TYPE.toString(), Byte.TYPE);
@@ -86,20 +89,27 @@ public class DefaultFactoryService
     /**
      * Additional class loaders.
      */
-    private ArrayList classLoaders = new ArrayList();
+    private ArrayList<ClassLoader> classLoaders = new ArrayList<ClassLoader>();
     /**
      * Customized object factories.
      */
-    private HashMap objectFactories = new HashMap();
+    private ConcurrentHashMap<String, Factory<?>> objectFactories =
+            new ConcurrentHashMap<String, Factory<?>>();
+    /**
+     * Customized object factory classes.
+     */
+    private ConcurrentHashMap<String, String> objectFactoryClasses =
+            new ConcurrentHashMap<String, String>();
+
     /**
      * Gets the class of a primitive type.
      *
      * @param type a primitive type.
      * @return the corresponding class, or null.
      */
-    protected static Class getPrimitiveClass(String type)
+    protected static Class<?> getPrimitiveClass(String type)
     {
-        return (Class) primitiveClasses.get(type);
+        return primitiveClasses.get(type);
     }
 
     /**
@@ -109,16 +119,17 @@ public class DefaultFactoryService
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    public Object getInstance(String className) throws FactoryException
+    @Override
+    public <T> T getInstance(String className) throws FactoryException
     {
         if (className == null)
         {
             throw new FactoryException("Missing String className");
         }
-        Factory factory = getFactory(className);
+        Factory<T> factory = getFactory(className);
         if (factory == null)
         {
-            Class clazz;
+            Class<T> clazz;
             try
             {
                 clazz = loadClass(className);
@@ -145,14 +156,15 @@ public class DefaultFactoryService
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    public Object getInstance(String className, ClassLoader loader) throws FactoryException
+    @Override
+    public <T> T getInstance(String className, ClassLoader loader) throws FactoryException
     {
-        Factory factory = getFactory(className);
+        Factory<T> factory = getFactory(className);
         if (factory == null)
         {
             if (loader != null)
             {
-                Class clazz;
+                Class<T> clazz;
                 try
                 {
                     clazz = loadClass(className, loader);
@@ -184,12 +196,13 @@ public class DefaultFactoryService
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    public Object getInstance(String className, Object[] params, String[] signature) throws FactoryException
+    @Override
+    public <T> T getInstance(String className, Object[] params, String[] signature) throws FactoryException
     {
-        Factory factory = getFactory(className);
+        Factory<T> factory = getFactory(className);
         if (factory == null)
         {
-            Class clazz;
+            Class<T> clazz;
             try
             {
                 clazz = loadClass(className);
@@ -220,15 +233,16 @@ public class DefaultFactoryService
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    public Object getInstance(String className, ClassLoader loader, Object[] params, String[] signature)
+    @Override
+    public <T> T getInstance(String className, ClassLoader loader, Object[] params, String[] signature)
         throws FactoryException
     {
-        Factory factory = getFactory(className);
+        Factory<T> factory = getFactory(className);
         if (factory == null)
         {
             if (loader != null)
             {
-                Class clazz;
+                Class<T> clazz;
                 try
                 {
                     clazz = loadClass(className, loader);
@@ -256,9 +270,10 @@ public class DefaultFactoryService
      * @return true if class loaders are supported, false otherwise.
      * @throws FactoryException if test fails.
      */
+    @Override
     public boolean isLoaderSupported(String className) throws FactoryException
     {
-        Factory factory = getFactory(className);
+        Factory<?> factory = getFactory(className);
         return factory != null ? factory.isLoaderSupported() : true;
     }
     /**
@@ -268,7 +283,8 @@ public class DefaultFactoryService
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    public Object getInstance(Class clazz) throws FactoryException
+    @Override
+    public <T> T getInstance(Class<T> clazz) throws FactoryException
     {
         try
         {
@@ -290,12 +306,12 @@ public class DefaultFactoryService
      * @return the instance.
      * @throws FactoryException if instantiation fails.
      */
-    protected Object getInstance(Class clazz, Object params[], String signature[]) throws FactoryException
+    protected <T> T getInstance(Class<T> clazz, Object params[], String signature[]) throws FactoryException
     {
         /* Try to construct. */
         try
         {
-            Class[] sign = getSignature(clazz, params, signature);
+            Class<?>[] sign = getSignature(clazz, params, signature);
             return clazz.getConstructor(sign).newInstance(params);
         }
         catch (Exception x)
@@ -314,14 +330,15 @@ public class DefaultFactoryService
      * of a different class loader.
      * @throws ClassNotFoundException if any of the classes is not found.
      */
-    public Class[] getSignature(Class clazz, Object params[], String signature[]) throws ClassNotFoundException
+    @Override
+    public Class<?>[] getSignature(Class<?> clazz, Object params[], String signature[]) throws ClassNotFoundException
     {
         if (signature != null)
         {
             /* We have parameters. */
             ClassLoader tempLoader;
             ClassLoader loader = clazz.getClassLoader();
-            Class[] sign = new Class[signature.length];
+            Class<?>[] sign = new Class[signature.length];
             for (int i = 0; i < signature.length; i++)
             {
                 /* Check primitive types. */
@@ -368,25 +385,43 @@ public class DefaultFactoryService
     protected Object switchObjectContext(Object object, ClassLoader loader)
     {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
+
         try
         {
             ObjectOutputStream out = new ObjectOutputStream(bout);
             out.writeObject(object);
             out.flush();
         }
-        catch (Exception x)
+        catch (IOException x)
         {
             return object;
         }
+
+        ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
+        ObjectInputStreamForContext in = null;
+
         try
         {
-            ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
-            ObjectInputStreamForContext in = new ObjectInputStreamForContext(bin, loader);
+            in = new ObjectInputStreamForContext(bin, loader);
             return in.readObject();
         }
         catch (Exception x)
         {
             return object;
+        }
+        finally
+        {
+            if (in != null)
+            {
+                try
+                {
+                    in.close();
+                }
+                catch (IOException e)
+                {
+                    // close quietly
+                }
+            }
         }
     }
     /**
@@ -396,21 +431,33 @@ public class DefaultFactoryService
      * @return the loaded class.
      * @throws ClassNotFoundException if the class was not found.
      */
-    protected Class loadClass(String className) throws ClassNotFoundException
+    @SuppressWarnings("unchecked")
+    protected <T> Class<T> loadClass(String className) throws ClassNotFoundException
     {
         ClassLoader loader = this.getClass().getClassLoader();
         try
         {
-            return loader != null ? loader.loadClass(className) : Class.forName(className);
+            Class<T> clazz;
+
+            if (loader != null)
+            {
+                clazz = (Class<T>) loader.loadClass(className);
+            }
+            else
+            {
+                clazz = (Class<T>) Class.forName(className);
+            }
+
+            return clazz;
         }
         catch (ClassNotFoundException x)
         {
             /* Go through additional loaders. */
-            for (Iterator i = classLoaders.iterator(); i.hasNext();)
+            for (ClassLoader l : classLoaders)
             {
                 try
                 {
-                    return ((ClassLoader) i.next()).loadClass(className);
+                    return (Class<T>) l.loadClass(className);
                 }
                 catch (ClassNotFoundException xx)
                 {
@@ -429,9 +476,17 @@ public class DefaultFactoryService
      * @return the loaded class.
      * @throws ClassNotFoundException if the class was not found.
      */
-    protected Class loadClass(String className, ClassLoader loader) throws ClassNotFoundException
+    @SuppressWarnings("unchecked")
+    protected <T> Class<T> loadClass(String className, ClassLoader loader) throws ClassNotFoundException
     {
-        return loader != null ? loader.loadClass(className) : loadClass(className);
+        if (loader != null)
+        {
+            return (Class<T>) loader.loadClass(className);
+        }
+        else
+        {
+            return loadClass(className);
+        }
     }
     /**
      * Gets a customized factory for a named class. If no class-specific
@@ -442,49 +497,54 @@ public class DefaultFactoryService
      * @return the factory, or null if not specified and no default.
      * @throws FactoryException if instantiation of the factory fails.
      */
-    protected Factory getFactory(String className) throws FactoryException
+    @SuppressWarnings("unchecked")
+    protected <T> Factory<T> getFactory(String className) throws FactoryException
     {
-        HashMap factories = objectFactories;
-        Object factory = factories.get(className);
+        Factory<T> factory = (Factory<T>) objectFactories.get(className);
         if (factory == null)
         {
             //No named factory for this; try the default, if one
             //exists.
-            factory = factories.get(DEFAULT_FACTORY);
+            factory = (Factory<T>) objectFactories.get(DEFAULT_FACTORY);
         }
-        if (factory != null)
+        if (factory == null)
         {
-            if (factory instanceof String)
+            /* Not yet instantiated... */
+            String factoryClass = objectFactoryClasses.get(className);
+            if (factoryClass == null)
             {
-                /* Not yet instantiated... */
-                try
-                {
-                    factory = (Factory) getInstance((String) factory);
-                    ((Factory) factory).init(className);
-                }
-                catch (FactoryException x)
-                {
-                    throw x;
-                }
-                catch (ClassCastException x)
-                {
-                    throw new FactoryException("Incorrect factory " + (String) factory + " for class " + className, x);
-                }
-                factories = (HashMap) factories.clone();
-                factories.put(className, factory);
-                objectFactories = factories;
+                factoryClass = objectFactoryClasses.get(DEFAULT_FACTORY);
             }
-            return (Factory) factory;
+            if (factoryClass == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                factory = getInstance(factoryClass);
+                factory.init(className);
+            }
+            catch (ClassCastException x)
+            {
+                throw new FactoryException("Incorrect factory " + factoryClass + " for class " + className, x);
+            }
+            Factory<T> _factory = (Factory<T>) objectFactories.putIfAbsent(className, factory);
+            if (_factory != null)
+            {
+                // Already created - take first instance
+                factory = _factory;
+            }
         }
-        else
-        {
-            return null;
-        }
+
+        return factory;
     }
+
     // ---------------- Avalon Lifecycle Methods ---------------------
     /**
      * Avalon component lifecycle method
      */
+    @Override
     public void configure(Configuration conf) throws ConfigurationException
     {
         final Configuration[] loaders = conf.getChildren(CLASS_LOADER);
@@ -506,10 +566,11 @@ public class DefaultFactoryService
                 String factory = nameVal[i].getValue();
                 // Store the factory to the table as a string and
                 // instantiate it by using the service when needed.
-                objectFactories.put(key, factory);
+                objectFactoryClasses.put(key, factory);
             }
         }
     }
+
     /**
      * Avalon component lifecycle method
      * Initializes the service by loading default class loaders
@@ -517,6 +578,7 @@ public class DefaultFactoryService
      *
      * @throws InitializationException if initialization fails.
      */
+    @Override
     public void initialize() throws Exception
     {
         if (loaderNames != null)
@@ -525,16 +587,28 @@ public class DefaultFactoryService
             {
                 try
                 {
-                    classLoaders.add(loadClass(loaderNames[i]).newInstance());
+                    ClassLoader loader = (ClassLoader) loadClass(loaderNames[i]).newInstance();
+                    classLoaders.add(loader);
                 }
                 catch (Exception x)
                 {
                     throw new Exception(
-                        "No such class loader '" + loaderNames[i] + "' for DefaultFactoryService",
-                        x);
+                        "No such class loader '" + loaderNames[i] + "' for DefaultFactoryService", x);
                 }
             }
             loaderNames = null;
         }
+    }
+
+    /**
+     * Avalon component lifecycle method
+     * Clear lists and maps
+     */
+    @Override
+    public void dispose()
+    {
+        objectFactories.clear();
+        objectFactoryClasses.clear();
+        classLoaders.clear();
     }
 }

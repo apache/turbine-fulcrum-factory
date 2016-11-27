@@ -21,6 +21,7 @@ package org.apache.fulcrum.factory;
 
 
 import java.util.ArrayList;
+
 import org.apache.fulcrum.testcontainer.BaseUnitTest;
 
 /**
@@ -43,6 +44,7 @@ public class FactoryServiceTest extends BaseUnitTest
         super(name);
     }
 
+    @Override
     public void setUp() throws Exception
     {
         super.setUp();
@@ -116,7 +118,7 @@ public class FactoryServiceTest extends BaseUnitTest
         params[0] = sourceValu;
         String signature[] = new String[1];
         signature[0] = "java.lang.String";
-        Class[] results = factoryService.getSignature(StringBuffer.class, params, signature);
+        Class<?>[] results = factoryService.getSignature(StringBuffer.class, params, signature);
         assertEquals(1, results.length);
         assertTrue(results[0].equals(String.class));
 
@@ -126,6 +128,5 @@ public class FactoryServiceTest extends BaseUnitTest
         results = factoryService.getSignature(ArrayList.class, params, signature);
         assertEquals(1, results.length);
         assertTrue("Result:" + results[0].getName(),results[0].equals(Integer.class));
-
     }
 }
