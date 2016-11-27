@@ -24,6 +24,14 @@
   </properties>
 
   <body>
+    <release version="1.0.5" date="in SVN">
+      <action dev="tv" type="add">
+        Added generics
+      </action>
+      <action dev="tv" type="update">
+        Employ more standard Maven layout
+      </action>
+    </release>
     <release version="1.0.4" date="2009-06-16">
       <action dev="tv" type="add">
         Added a Maven-2 build
