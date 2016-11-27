@@ -120,13 +120,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.fulcrum.ServiceException;
+import org.apache.fulcrum.factroy.FactoryException;
 import org.apache.fulcrum.factory.Factory;
 
 /**
  * A factory for instantiating DOM parsers.
  */
-public class DomBuilderFactory implements Factory
+public class DomBuilderFactory implements Factory<DocumentBuilder>
 {
     /**
      * The implementation of the factory.
@@ -137,7 +137,7 @@ public class DomBuilderFactory implements Factory
      * Initializes the factory.
      */
     public void init(String className)
-        throws ServiceException
+        throws FactoryException
     {
         factory = DocumentBuilderFactory.newInstance();
     }
@@ -145,8 +145,8 @@ public class DomBuilderFactory implements Factory
     /**
      * Gets a DocumentBuilder instance.
      */
-    public Object getInstance()
-        throws ServiceException
+    public DocumentBuilder getInstance()
+        throws FactoryException
     {
         try
         {
@@ -154,7 +154,7 @@ public class DomBuilderFactory implements Factory
         }
         catch (ParserConfigurationException x)
         {
-            throw new TurbineException(x);
+            throw new FactoryException(x);
         }
     }
 
@@ -162,8 +162,8 @@ public class DomBuilderFactory implements Factory
      * Gets a DocumentBuilder instance.
      * The given loader is ignored.
      */
-    public Object getInstance(ClassLoader loader)
-        throws ServiceException
+    public DocumentBuilder getInstance(ClassLoader loader)
+        throws FactoryException
     {
         return getInstance();
     }
@@ -172,9 +172,8 @@ public class DomBuilderFactory implements Factory
      * Gets a DocumentBuilder instance.
      * Constructor parameters are ignored.
      */
-    public Object getInstance(Object[] params,
-                              String[] signature)
-        throws ServiceException
+    public DocumentBuilder getInstance(Object[] params, String[] signature)
+        throws FactoryException
     {
         return getInstance();
     }
@@ -183,10 +182,10 @@ public class DomBuilderFactory implements Factory
      * Gets a DocumentBuilder instance.
      * The given loader and constructor parameters are ignored.
      */
-    public Object getInstance(ClassLoader loader,
-                              Object[] params,
-                              String[] signature)
-        throws ServiceException
+    public DocumentBuilder getInstance(ClassLoader loader,
+        Object[] params,
+        String[] signature)
+        throws FactoryException
     {
         return getInstance();
     }
