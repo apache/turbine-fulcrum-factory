@@ -82,6 +82,7 @@ public class DefaultFactoryService
         primitiveClasses.put(Float.TYPE.toString(), Float.TYPE);
         primitiveClasses.put(Double.TYPE.toString(), Double.TYPE);
     }
+
     /**
      * temporary storage of class names between configure and initialize
      */

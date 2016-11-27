@@ -32,12 +32,35 @@ public class FactoryException extends Exception
      */
     private static final long serialVersionUID = 8954422192583295720L;
 
+    /**
+     * Default constructor
+     */
+    public FactoryException()
+    {
+        super();
+    }
+
+    /**
+     * @see java.lang.Exception(String, Throwable)
+     */
+    public FactoryException(String message, Throwable e)
+    {
+        super(message, e);
+    }
+
+    /**
+     * @see java.lang.Exception(Throwable)
+     */
+    public FactoryException(Throwable e)
+    {
+        super(e);
+    }
+
+    /**
+     * @see java.lang.Exception(String)
+     */
     public FactoryException(String msg)
     {
         super(msg);
-    }
-    public FactoryException(String msg, Exception ex)
-    {
-        super(msg, ex);
     }
 }

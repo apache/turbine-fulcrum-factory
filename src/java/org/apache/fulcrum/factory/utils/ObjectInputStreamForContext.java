@@ -60,7 +60,7 @@ public class ObjectInputStreamForContext extends ObjectInputStream
     }
 
     /**
-     * @see java.io.ObjectInputStream#resolveClass()
+     * @see java.io.ObjectInputStream#resolveClass(ObjectStreamClass)
      */
     @Override
     protected Class<?> resolveClass(ObjectStreamClass v)

@@ -1,8 +1,5 @@
 package org.apache.fulcrum.factory;
 
-import org.apache.avalon.framework.service.ServiceException;
-
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,8 +18,6 @@ import org.apache.avalon.framework.service.ServiceException;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-
 
 /**
  * The Factory Service instantiates objects using either default
@@ -47,7 +42,7 @@ public interface FactoryService
 	*
 	* @param clazz the name of the class.
 	* @return the instance.
-	* @throws ServiceException if instantiation fails.
+	* @throws FactoryException if instantiation fails.
 	*/
    <T> T getInstance(Class<T> clazz)
 	   throws FactoryException;
@@ -57,7 +52,7 @@ public interface FactoryService
      *
      * @param className the name of the class.
      * @return the instance.
-     * @throws ServiceException if instantiation fails.
+     * @throws FactoryException if instantiation fails.
      */
     <T> T getInstance(String className)
         throws FactoryException;
@@ -71,7 +66,7 @@ public interface FactoryService
      * @param className the name of the class.
      * @param loader the class loader.
      * @return the instance.
-     * @throws ServiceException if instantiation fails.
+     * @throws FactoryException if instantiation fails.
      */
     <T> T getInstance(String className,
                               ClassLoader loader)
@@ -86,7 +81,7 @@ public interface FactoryService
      * @param params an array containing the parameters of the constructor.
      * @param signature an array containing the signature of the constructor.
      * @return the instance.
-     * @throws ServiceException if instantiation fails.
+     * @throws FactoryException if instantiation fails.
      */
     <T> T getInstance(String className,
                               Object[] params,
@@ -106,7 +101,7 @@ public interface FactoryService
      * @param params an array containing the parameters of the constructor.
      * @param signature an array containing the signature of the constructor.
      * @return the instance.
-     * @throws ServiceException if instantiation fails.
+     * @throws FactoryException if instantiation fails.
      */
     <T> T getInstance(String className,
                               ClassLoader loader,
@@ -119,7 +114,7 @@ public interface FactoryService
      *
      * @param className the name of the class.
      * @return true if class loaders are supported, false otherwise.
-     * @throws ServiceException if test fails.
+     * @throws FactoryException if test fails.
      */
     boolean isLoaderSupported(String className)
         throws FactoryException;
