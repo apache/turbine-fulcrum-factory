@@ -19,7 +19,7 @@
   <parent>
     <artifactId>turbine-parent</artifactId>
        <groupId>org.apache.turbine</groupId>
-       <version>3</version>
+       <version>4-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -97,38 +97,6 @@
     <sourceDirectory>${basedir}/src/java</sourceDirectory>
     <testSourceDirectory>${basedir}/src/test</testSourceDirectory>
   </build>
-
-  <profiles>
-    <profile>
-      <id>apache-release</id>
-      <build>
-        <plugins>
-          <plugin>
-            <!-- build the source and binary distribution packages -->
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>fulcrum-source-release-assembly</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-                <configuration>
-                  <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
-                  <descriptors>
-                    <descriptor>src/assembly/binaries.xml</descriptor>
-                    <descriptor>src/assembly/source.xml</descriptor>
-                  </descriptors>
-                  <tarLongFileFormat>gnu</tarLongFileFormat>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <properties>
     <turbine.site.path>fulcrum/fulcrum-factory</turbine.site.path>
