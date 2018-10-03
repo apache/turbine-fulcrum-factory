@@ -56,16 +56,16 @@ public class FactoryServiceTest extends BaseUnitTest
      */
     public void testGetInstanceString() throws Exception
     {
-        Object object = factoryService.getInstance("java.lang.StringBuffer");
-        assertTrue(object instanceof StringBuffer);
+        Object object = factoryService.getInstance("java.lang.StringBuilder");
+        assertTrue(object instanceof StringBuilder);
     }
     /*
      * Class to test for Object getInstance(String, ClassLoader)
      */
     public void testGetInstanceStringClassLoader() throws Exception
     {
-        Object object = factoryService.getInstance("java.lang.StringBuffer", StringBuffer.class.getClassLoader());
-        assertTrue(object instanceof StringBuffer);
+        Object object = factoryService.getInstance("java.lang.StringBuilder", StringBuilder.class.getClassLoader());
+        assertTrue(object instanceof StringBuilder);
     }
     /*
      * Class to test for Object getInstance(String, Object[], String[])
@@ -77,8 +77,8 @@ public class FactoryServiceTest extends BaseUnitTest
         params[0] = sourceValue;
         String signature[] = new String[1];
         signature[0] = "java.lang.String";
-        Object object = factoryService.getInstance("java.lang.StringBuffer", params, signature);
-        assertTrue(object instanceof StringBuffer);
+        Object object = factoryService.getInstance("java.lang.StringBuilder", params, signature);
+        assertTrue(object instanceof StringBuilder);
         assertEquals(sourceValue, object.toString());
 
     }
@@ -94,11 +94,11 @@ public class FactoryServiceTest extends BaseUnitTest
         signature[0] = "java.lang.String";
         Object object =
             factoryService.getInstance(
-                "java.lang.StringBuffer",
-                StringBuffer.class.getClassLoader(),
+                "java.lang.StringBuilder",
+                StringBuilder.class.getClassLoader(),
                 params,
                 signature);
-        assertTrue(object instanceof StringBuffer);
+        assertTrue(object instanceof StringBuilder);
         assertEquals(sourceValu, object.toString());
 
     }
@@ -118,7 +118,7 @@ public class FactoryServiceTest extends BaseUnitTest
         params[0] = sourceValu;
         String signature[] = new String[1];
         signature[0] = "java.lang.String";
-        Class<?>[] results = factoryService.getSignature(StringBuffer.class, params, signature);
+        Class<?>[] results = factoryService.getSignature(StringBuilder.class, params, signature);
         assertEquals(1, results.length);
         assertTrue(results[0].equals(String.class));
 
