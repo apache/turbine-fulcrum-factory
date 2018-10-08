@@ -69,10 +69,9 @@ public class DefaultFactoryService
     /**
      * Primitive classes for reflection of constructors.
      */
-    private static HashMap<String, Class<?>> primitiveClasses;
+    private static HashMap<String, Class<?>> primitiveClasses = new HashMap<String, Class<?>>(8);
 
     {
-        primitiveClasses = new HashMap<String, Class<?>>(8);
         primitiveClasses.put(Boolean.TYPE.toString(), Boolean.TYPE);
         primitiveClasses.put(Character.TYPE.toString(), Character.TYPE);
         primitiveClasses.put(Byte.TYPE.toString(), Byte.TYPE);
