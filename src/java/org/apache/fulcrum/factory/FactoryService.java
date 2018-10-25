@@ -41,7 +41,7 @@ public interface FactoryService
 	* Gets an instance of a class.
 	*
 	* @param clazz the name of the class.
-	* @return the instance.
+	* @return {@inheritDoc} the instance.
 	* @throws FactoryException if instantiation fails.
 	*/
    <T> T getInstance(Class<T> clazz)
@@ -51,7 +51,7 @@ public interface FactoryService
      * Gets an instance of a named class.
      *
      * @param className the name of the class.
-     * @return the instance.
+     * @return {@inheritDoc} the instance.
      * @throws FactoryException if instantiation fails.
      */
     <T> T getInstance(String className)
@@ -65,7 +65,7 @@ public interface FactoryService
      *
      * @param className the name of the class.
      * @param loader the class loader.
-     * @return the instance.
+     * @return {@inheritDoc} the instance.
      * @throws FactoryException if instantiation fails.
      */
     <T> T getInstance(String className,
@@ -80,7 +80,7 @@ public interface FactoryService
      * @param className the name of the class.
      * @param params an array containing the parameters of the constructor.
      * @param signature an array containing the signature of the constructor.
-     * @return the instance.
+     * @return {@inheritDoc} the instance.
      * @throws FactoryException if instantiation fails.
      */
     <T> T getInstance(String className,
@@ -100,7 +100,7 @@ public interface FactoryService
      * @param loader the class loader.
      * @param params an array containing the parameters of the constructor.
      * @param signature an array containing the signature of the constructor.
-     * @return the instance.
+     * @return {@inheritDoc} the instance.
      * @throws FactoryException if instantiation fails.
      */
     <T> T getInstance(String className,
@@ -125,7 +125,7 @@ public interface FactoryService
      * @param clazz the class.
      * @param params an array containing the parameters of the method.
      * @param signature an array containing the signature of the method.
-     * @return an array of signature classes. Note that in some cases
+     * @return {@inheritDoc} an array of signature classes. Note that in some cases
      * objects in the parameter array can be switched to the context
      * of a different class loader.
      * @throws ClassNotFoundException if any of the classes is not found.

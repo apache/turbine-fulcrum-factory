@@ -39,33 +39,37 @@ import org.apache.fulcrum.factory.utils.ObjectInputStreamForContext;
  * The Factory Service instantiates objects using specified
  * class loaders. If none is specified, the default one
  * will be used.
+ * 
+ * avalon.component name="factory" lifestyle="singleton"
+ * avalon.service   type="org.apache.fulcrum.factory.FactoryService"
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:mcconnell@apache.org">Stephen McConnell</a>
  * @version $Id$
  *
- * @avalon.component name="factory" lifestyle="singleton"
- * @avalon.service type="org.apache.fulcrum.factory.FactoryService"
  */
 public class DefaultFactoryService
     extends AbstractLogEnabled
     implements FactoryService, Configurable, Initializable, Disposable
 {
     protected boolean initialized = false;
-    //private boolean disposed = false;
+
     /**
      * The property specifying a set of additional class loaders.
      */
     private static final String CLASS_LOADER = "classloader";
+    
     /**
      * The property prefix specifying additional object factories.
      */
     private static final String OBJECT_FACTORY = "object-factory";
+    
     /**
      * The name of the default factory.
      */
     protected static final String DEFAULT_FACTORY = "default";
+    
     /**
      * Primitive classes for reflection of constructors.
      */
@@ -380,7 +384,9 @@ public class DefaultFactoryService
      * Switches an object into the context of a different class loader.
      *
      * @param object an object to switch.
+     * @param loader the ClassLoader to use
      * @param loader the loader of the new context.
+     * @return the object
      */
     protected Object switchObjectContext(Object object, ClassLoader loader)
     {
@@ -428,7 +434,7 @@ public class DefaultFactoryService
      * Loads the named class using the default class loader.
      *
      * @param className the name of the class to load.
-     * @return the loaded class.
+     * @return {@inheritDoc} the loaded class.
      * @throws ClassNotFoundException if the class was not found.
      */
     @SuppressWarnings("unchecked")
@@ -473,7 +479,7 @@ public class DefaultFactoryService
      *
      * @param className the name of the class to load.
      * @param loader the loader to use.
-     * @return the loaded class.
+     * @return {@inheritDoc} the loaded class.
      * @throws ClassNotFoundException if the class was not found.
      */
     @SuppressWarnings("unchecked")
@@ -494,7 +500,7 @@ public class DefaultFactoryService
      * factory.
      *
      * @param className the name of the class to load.
-     * @return the factory, or null if not specified and no default.
+     * @return {@inheritDoc} the factory, or null if not specified and no default.
      * @throws FactoryException if instantiation of the factory fails.
      */
     @SuppressWarnings("unchecked")
@@ -576,7 +582,7 @@ public class DefaultFactoryService
      * Initializes the service by loading default class loaders
      * and customized object factories.
      *
-     * @throws InitializationException if initialization fails.
+     * @throws Exception if initialization fails.
      */
     @Override
     public void initialize() throws Exception

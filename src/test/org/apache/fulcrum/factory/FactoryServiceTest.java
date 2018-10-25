@@ -28,8 +28,6 @@ import org.apache.fulcrum.testcontainer.BaseUnitTest;
  * @author Eric Pugh
  * @author <a href="mailto:mcconnell@apache.org">Stephen McConnell</a>
  *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class FactoryServiceTest extends BaseUnitTest
 {
@@ -102,15 +100,18 @@ public class FactoryServiceTest extends BaseUnitTest
         assertEquals(sourceValu, object.toString());
 
     }
+    
     /**
-     * @todo Need to run a test where the loader is NOT supported.
-     * @throws Exception
+     * Test if the loader is supported
+     * 
+     * @throws Exception Generic exception
      */
     public void testIsLoaderSupported() throws Exception
     {
+        // TODO Need to run a test where the loader is NOT supported.
         assertTrue(factoryService.isLoaderSupported("java.lang.String"));
-
     }
+    
     public void testGetSignature() throws Exception
     {
         Object params[] = new Object[1];

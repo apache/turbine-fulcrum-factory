@@ -19,6 +19,8 @@ package org.apache.fulcrum.factory;
  * under the License.
  */
 
+import java.lang.Exception;
+
 /**
  * Exception thrown when there is a problem with the FactoryService
  *
@@ -41,7 +43,9 @@ public class FactoryException extends Exception
     }
 
     /**
-     * @see java.lang.Exception(String, Throwable)
+     * {@link java.lang.Exception#Exception(String, Throwable)}
+     * @param message the message
+     * @param e the exception
      */
     public FactoryException(String message, Throwable e)
     {
@@ -49,7 +53,8 @@ public class FactoryException extends Exception
     }
 
     /**
-     * @see java.lang.Exception(Throwable)
+     * {@link java.lang.Exception#Exception(Throwable)}
+     * @param e the exception to bubble up
      */
     public FactoryException(Throwable e)
     {
@@ -57,7 +62,8 @@ public class FactoryException extends Exception
     }
 
     /**
-     * @see java.lang.Exception(String)
+     * {@link java.lang.Exception#Exception(String)}
+     * @param msg the message to bubble up
      */
     public FactoryException(String msg)
     {
