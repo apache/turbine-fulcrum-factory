@@ -25,6 +25,15 @@
 
   <body>
     <release version="1.1.1" date="in SVN">
+		<action dev="painter" type="update">
+			Addressed all PMD static code analyzer issues and corrected where appropriate
+		</action>
+		<action dev="painter" type="update">
+			Derive from Turbine parent POM 5
+		</action>
+		<action dev="painter" type="update">
+			Require Java 8
+		</action>
     </release>
     <release version="1.1.0" date="2016-11-27">
       <action dev="tv" type="add">
