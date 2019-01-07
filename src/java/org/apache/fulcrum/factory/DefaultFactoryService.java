@@ -106,7 +106,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @param type a primitive type.
 	 * @return the corresponding class, or null.
 	 */
-	protected static Class<?> getPrimitiveClass(String type) {
+	protected static Class<?> getPrimitiveClass(String type) 
+	{
 		return primitiveClasses.get(type);
 	}
 
@@ -118,7 +119,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws FactoryException if instantiation fails.
 	 */
 	@Override
-	public <T> T getInstance(String className) throws FactoryException {
+	public <T> T getInstance(String className) throws FactoryException 
+	{
 		if (className == null) {
 			throw new FactoryException("Missing String className");
 		}
@@ -149,7 +151,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws FactoryException if instantiation fails.
 	 */
 	@Override
-	public <T> T getInstance(String className, ClassLoader loader) throws FactoryException {
+	public <T> T getInstance(String className, ClassLoader loader) throws FactoryException 
+	{
 		Factory<T> factory = getFactory(className);
 		if (factory == null) {
 			if (loader != null) {
@@ -180,7 +183,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws FactoryException if instantiation fails.
 	 */
 	@Override
-	public <T> T getInstance(String className, Object[] params, String[] signature) throws FactoryException {
+	public <T> T getInstance(String className, Object[] params, String[] signature) throws FactoryException 
+	{
 		Factory<T> factory = getFactory(className);
 		if (factory == null) {
 			Class<T> clazz;
@@ -203,7 +207,9 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * <p>
 	 * Class loaders are supported only if the isLoaderSupported method returns
 	 * true. Otherwise the loader parameter is ignored.
+	 * </p>
 	 *
+	 * @param           <T> Type of the class
 	 * @param className the name of the class.
 	 * @param loader    the class loader.
 	 * @param params    an array containing the parameters of the constructor.
@@ -213,7 +219,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 */
 	@Override
 	public <T> T getInstance(String className, ClassLoader loader, Object[] params, String[] signature)
-			throws FactoryException {
+			throws FactoryException 
+	{
 		Factory<T> factory = getFactory(className);
 		if (factory == null) {
 			if (loader != null) {
@@ -248,6 +255,7 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	/**
 	 * Gets an instance of a specified class.
 	 *
+	 * @param           <T> Type of the class
 	 * @param clazz the class.
 	 * @return the instance.
 	 * @throws FactoryException if instantiation fails.
@@ -295,7 +303,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws ClassNotFoundException if any of the classes is not found.
 	 */
 	@Override
-	public Class<?>[] getSignature(Class<?> clazz, Object params[], String signature[]) throws ClassNotFoundException {
+	public Class<?>[] getSignature(Class<?> clazz, Object params[], String signature[]) throws ClassNotFoundException 
+	{
 		if (signature != null) {
 			/* We have parameters. */
 			ClassLoader tempLoader;
@@ -337,30 +346,43 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @param loader the loader of the new context.
 	 * @return the object
 	 */
-	protected Object switchObjectContext(Object object, ClassLoader loader) {
+	protected Object switchObjectContext(Object object, ClassLoader loader) 
+	{
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 
-		try {
+		try 
+		{
 			ObjectOutputStream out = new ObjectOutputStream(bout);
 			out.writeObject(object);
 			out.flush();
-		} catch (IOException x) {
+		} 
+		catch (IOException x) 
+		{
 			return object;
 		}
 
 		ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
 		ObjectInputStreamForContext in = null;
 
-		try {
+		try 
+		{
 			in = new ObjectInputStreamForContext(bin, loader);
 			return in.readObject();
-		} catch (Exception x) {
+		} 
+		catch (Exception x) 
+		{
 			return object;
-		} finally {
-			if (in != null) {
-				try {
+		} 
+		finally 
+		{
+			if (in != null) 
+			{
+				try 
+				{
 					in.close();
-				} catch (IOException e) {
+				} 
+				catch (IOException e) 
+				{
 					// close quietly
 				}
 			}
@@ -375,24 +397,35 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws ClassNotFoundException if the class was not found.
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T> Class<T> loadClass(String className) throws ClassNotFoundException {
+	protected <T> Class<T> loadClass(String className) throws ClassNotFoundException 
+	{
 		ClassLoader loader = this.getClass().getClassLoader();
-		try {
+		try 
+		{
 			Class<T> clazz;
 
-			if (loader != null) {
+			if (loader != null) 
+			{
 				clazz = (Class<T>) loader.loadClass(className);
-			} else {
+			} 
+			else 
+			{
 				clazz = (Class<T>) Class.forName(className);
 			}
 
 			return clazz;
-		} catch (ClassNotFoundException x) {
+		} 
+		catch (ClassNotFoundException x) 
+		{
 			/* Go through additional loaders. */
-			for (ClassLoader l : classLoaders) {
-				try {
+			for (ClassLoader l : classLoaders) 
+			{
+				try 
+				{
 					return (Class<T>) l.loadClass(className);
-				} catch (ClassNotFoundException xx) {
+				} 
+				catch (ClassNotFoundException xx) 
+				{
 					// continue
 				}
 			}
@@ -410,10 +443,14 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws ClassNotFoundException if the class was not found.
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T> Class<T> loadClass(String className, ClassLoader loader) throws ClassNotFoundException {
-		if (loader != null) {
+	protected <T> Class<T> loadClass(String className, ClassLoader loader) throws ClassNotFoundException 
+	{
+		if (loader != null) 
+		{
 			return (Class<T>) loader.loadClass(className);
-		} else {
+		} 
+		else 
+		{
 			return loadClass(className);
 		}
 	}
@@ -427,19 +464,24 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws FactoryException if instantiation of the factory fails.
 	 */
 	@SuppressWarnings("unchecked")
-	protected <T> Factory<T> getFactory(String className) throws FactoryException {
+	protected <T> Factory<T> getFactory(String className) throws FactoryException 
+	{
 		Factory<T> factory = (Factory<T>) objectFactories.get(className);
-		if (factory == null) {
-			// No named factory for this; try the default, if one
-			// exists.
+		if (factory == null) 
+		{
+			// No named factory for this; try the default, if one exists
 			factory = (Factory<T>) objectFactories.get(DEFAULT_FACTORY);
 		}
+		
 		if (factory == null) {
+			
 			/* Not yet instantiated... */
 			String factoryClass = objectFactoryClasses.get(className);
-			if (factoryClass == null) {
+			if (factoryClass == null) 
+			{
 				factoryClass = objectFactoryClasses.get(DEFAULT_FACTORY);
 			}
+			
 			if (factoryClass == null) {
 				return null;
 			}
@@ -447,11 +489,15 @@ public class DefaultFactoryService extends AbstractLogEnabled
 			try {
 				factory = getInstance(factoryClass);
 				factory.init(className);
-			} catch (ClassCastException x) {
+			} 
+			catch (ClassCastException x) 
+			{
 				throw new FactoryException("Incorrect factory " + factoryClass + " for class " + className, x);
 			}
+			
 			Factory<T> _factory = (Factory<T>) objectFactories.putIfAbsent(className, factory);
-			if (_factory != null) {
+			if (_factory != null) 
+			{
 				// Already created - take first instance
 				factory = _factory;
 			}
@@ -467,17 +513,21 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @see org.apache.avalon.framework.configuration.Configurable#configure(org.apache.avalon.framework.configuration.Configuration)
 	 */
 	@Override
-	public void configure(Configuration conf) throws ConfigurationException {
+	public void configure(Configuration conf) throws ConfigurationException 
+	{
 		final Configuration[] loaders = conf.getChildren(CLASS_LOADER);
-		if (loaders != null) {
+		if (loaders != null) 
+		{
 			loaderNames = new String[loaders.length];
-			for (int i = 0; i < loaders.length; i++) {
+			for (int i = 0; i < loaders.length; i++) 
+			{
 				loaderNames[i] = loaders[i].getValue();
 			}
 		}
 
 		final Configuration factories = conf.getChild(OBJECT_FACTORY, false);
-		if (factories != null) {
+		if (factories != null) 
+		{
 			// Store the factory to the table as a string and
 			// instantiate it by using the service when needed.
 			Configuration[] nameVal = factories.getChildren();
@@ -494,13 +544,19 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws Exception if initialization fails.
 	 */
 	@Override
-	public void initialize() throws Exception {
-		if (loaderNames != null) {
-			for (String className : loaderNames) {
-				try {
+	public void initialize() throws Exception 
+	{
+		if (loaderNames != null) 
+		{
+			for (String className : loaderNames) 
+			{
+				try 
+				{
 					ClassLoader loader = (ClassLoader) loadClass(className).newInstance();
 					classLoaders.add(loader);
-				} catch (Exception x) {
+				} 
+				catch (Exception x) 
+				{
 					throw new Exception("No such class loader '" + className + "' for DefaultFactoryService", x);
 				}
 			}

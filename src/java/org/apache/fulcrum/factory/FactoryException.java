@@ -34,7 +34,8 @@ public class FactoryException extends Exception {
 	/**
 	 * Default constructor
 	 */
-	public FactoryException() {
+	public FactoryException() 
+	{
 		super();
 	}
 
@@ -44,7 +45,8 @@ public class FactoryException extends Exception {
 	 * @param message the message
 	 * @param e       the exception
 	 */
-	public FactoryException(String message, Throwable e) {
+	public FactoryException(String message, Throwable e) 
+	{
 		super(message, e);
 	}
 
@@ -53,7 +55,8 @@ public class FactoryException extends Exception {
 	 * 
 	 * @param e the exception to bubble up
 	 */
-	public FactoryException(Throwable e) {
+	public FactoryException(Throwable e) 
+	{
 		super(e);
 	}
 
@@ -62,7 +65,8 @@ public class FactoryException extends Exception {
 	 * 
 	 * @param msg the message to bubble up
 	 */
-	public FactoryException(String msg) {
+	public FactoryException(String msg) 
+	{
 		super(msg);
 	}
 }

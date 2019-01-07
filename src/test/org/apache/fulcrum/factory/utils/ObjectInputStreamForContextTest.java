@@ -22,31 +22,50 @@ package org.apache.fulcrum.factory.utils;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
-import junit.framework.TestCase;
+
+import org.apache.fulcrum.testcontainer.BaseUnitTest;
+import org.junit.Test;
 
 /**
- * @author Eric Pugh
+ * Basic test for object input stream for fulcrum factory
+ * 
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
+ * @version $Id$ 
  */
-public class ObjectInputStreamForContextTest extends TestCase
+public class ObjectInputStreamForContextTest extends BaseUnitTest
 {
-    public static void main(String[] args)
-    {
-        junit.textui.TestRunner.run(ObjectInputStreamForContextTest.class);
-    }
-    /*
-     * Class to test for void ObjectInputStreamForContext(InputStream, ClassLoader)
+	 
+    /**
+     * Defines the testcase name for JUnit.
+     *
+     * @param name the testcase's name.
      */
+    public ObjectInputStreamForContextTest(String name)
+    {
+        super(name);
+    }
+	
+    /**
+     * 
+     * Class to test for void ObjectInputStreamForContext(InputStream, ClassLoader)
+     * 
+     * @throws Exception generic exception
+     */
+    @Test
     public void testObjectInputStreamForContextInputStreamClassLoader() throws Exception
     {
         Object object = new String("I am testing");
         Object object2 = null;
+        
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         ObjectOutputStream out = new ObjectOutputStream(bout);
         out.writeObject(object);
         out.flush();
+        
         ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
         ObjectInputStreamForContext in = new ObjectInputStreamForContext(bin, String.class.getClassLoader());
         object2 = in.readObject();
+        
         assertEquals(object.toString(), object2.toString());
         assertEquals(object, object2);
     }

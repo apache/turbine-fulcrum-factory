@@ -38,7 +38,7 @@ public class ObjectInputStreamForContext extends ObjectInputStream
     private ClassLoader classLoader;
 
     /**
-     * this is to make the proxy happy.
+     * Required to make satisfy the proxy methods
      * 
      * @throws IOException Generic exception
      */
@@ -48,7 +48,7 @@ public class ObjectInputStreamForContext extends ObjectInputStream
     }
 
     /**
-     * Contructs a new object stream for a context.
+     * This method will construct a new object stream for a context.
      *
      * @param in the serialized input stream.
      * @param loader the class loader of the context.

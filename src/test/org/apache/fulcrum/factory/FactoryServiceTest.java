@@ -23,15 +23,21 @@ package org.apache.fulcrum.factory;
 import java.util.ArrayList;
 
 import org.apache.fulcrum.testcontainer.BaseUnitTest;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * @author Eric Pugh
+ * Basic tests of the fulcrum factory service
+ * 
+ * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:mcconnell@apache.org">Stephen McConnell</a>
- *
+ * 
+ * @version $Id$ 
  */
 public class FactoryServiceTest extends BaseUnitTest
 {
     private FactoryService factoryService = null;
+    
     /**
      * Defines the testcase name for JUnit.
      *
@@ -42,54 +48,64 @@ public class FactoryServiceTest extends BaseUnitTest
         super(name);
     }
 
-    @Override
+    @Before
     public void setUp() throws Exception
     {
         super.setUp();
         factoryService = (FactoryService) this.resolve( FactoryService.class.getName() );
-
     }
-    /*
+    
+    /**
      * Class to test for Object getInstance(String)
+     * @throws Exception if factory fails to generate object
      */
+    @Test
     public void testGetInstanceString() throws Exception
     {
         Object object = factoryService.getInstance("java.lang.StringBuilder");
         assertTrue(object instanceof StringBuilder);
     }
-    /*
+    
+    /**
      * Class to test for Object getInstance(String, ClassLoader)
+     *
+     * @throws Exception Generic exception
      */
+    @Test
     public void testGetInstanceStringClassLoader() throws Exception
     {
         Object object = factoryService.getInstance("java.lang.StringBuilder", StringBuilder.class.getClassLoader());
         assertTrue(object instanceof StringBuilder);
     }
-    /*
+    
+    /**
      * Class to test for Object getInstance(String, Object[], String[])
+     * @throws Exception Generic exception
      */
+    @Test
     public void testGetInstanceStringObjectArrayStringArray() throws Exception
     {
-        Object params[] = new Object[1];
-        String sourceValue = "testing";
-        params[0] = sourceValue;
-        String signature[] = new String[1];
-        signature[0] = "java.lang.String";
+    	String sourceValue = "testing";
+    	Object params[] = new Object[] { sourceValue };
+        String signature[] = new String[] { "java.lang.String" };
+
         Object object = factoryService.getInstance("java.lang.StringBuilder", params, signature);
         assertTrue(object instanceof StringBuilder);
         assertEquals(sourceValue, object.toString());
-
     }
-    /*
+    
+    /**
      * Class to test for Object getInstance(String, ClassLoader, Object[], String[])
-     */
+     * 
+     * @throws Exception Generic exception
+     */    
+    @Test
     public void testGetInstanceStringClassLoaderObjectArrayStringArray() throws Exception
     {
-        Object params[] = new Object[1];
-        String sourceValu = "testing";
-        params[0] = sourceValu;
-        String signature[] = new String[1];
-        signature[0] = "java.lang.String";
+    	String sourceValue = "testing";
+    	Object params[] = new Object[] { sourceValue };
+        String signature[] = new String[] { "java.lang.String" };
+
         Object object =
             factoryService.getInstance(
                 "java.lang.StringBuilder",
@@ -97,7 +113,7 @@ public class FactoryServiceTest extends BaseUnitTest
                 params,
                 signature);
         assertTrue(object instanceof StringBuilder);
-        assertEquals(sourceValu, object.toString());
+        assertEquals(sourceValue, object.toString());
 
     }
     
@@ -106,19 +122,26 @@ public class FactoryServiceTest extends BaseUnitTest
      * 
      * @throws Exception Generic exception
      */
+    @Test
     public void testIsLoaderSupported() throws Exception
     {
         // TODO Need to run a test where the loader is NOT supported.
         assertTrue(factoryService.isLoaderSupported("java.lang.String"));
     }
     
+
+    /**
+     * Test get signature
+     * 
+     * @throws Exception Generic exception
+     */
+    @Test
     public void testGetSignature() throws Exception
     {
-        Object params[] = new Object[1];
-        String sourceValu = "testing";
-        params[0] = sourceValu;
-        String signature[] = new String[1];
-        signature[0] = "java.lang.String";
+    	String sourceValue = "testing";
+    	Object params[] = new Object[] { sourceValue };
+        String signature[] = new String[] { "java.lang.String" };
+
         Class<?>[] results = factoryService.getSignature(StringBuilder.class, params, signature);
         assertEquals(1, results.length);
         assertTrue(results[0].equals(String.class));

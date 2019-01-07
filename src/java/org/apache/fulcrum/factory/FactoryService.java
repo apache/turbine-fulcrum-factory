@@ -40,6 +40,7 @@ public interface FactoryService
 	/**
 	* Gets an instance of a class.
 	*
+	* @param <T> Type of the class
 	* @param clazz the name of the class.
 	* @return {@inheritDoc} the instance.
 	* @throws FactoryException if instantiation fails.
@@ -50,6 +51,7 @@ public interface FactoryService
     /**
      * Gets an instance of a named class.
      *
+     * @param <T> Type of the class
      * @param className the name of the class.
      * @return {@inheritDoc} the instance.
      * @throws FactoryException if instantiation fails.
@@ -60,9 +62,10 @@ public interface FactoryService
     /**
      * Gets an instance of a named class using a specified class loader.
      *
-     * <p>Class loaders are supported only if the isLoaderSupported
+     * Class loaders are supported only if the isLoaderSupported
      * method returns true. Otherwise the loader parameter is ignored.
-     *
+     * 
+     * @param <T> Type of the class
      * @param className the name of the class.
      * @param loader the class loader.
      * @return {@inheritDoc} the instance.
@@ -77,6 +80,7 @@ public interface FactoryService
      * Parameters for its constructor are given as an array of objects,
      * primitive types must be wrapped with a corresponding class.
      *
+     * @param <T> Type of the class
      * @param className the name of the class.
      * @param params an array containing the parameters of the constructor.
      * @param signature an array containing the signature of the constructor.
@@ -93,9 +97,10 @@ public interface FactoryService
      * Parameters for its constructor are given as an array of objects,
      * primitive types must be wrapped with a corresponding class.
      *
-     * <p>Class loaders are supported only if the isLoaderSupported
+     * Class loaders are supported only if the isLoaderSupported
      * method returns true. Otherwise the loader parameter is ignored.
      *
+     * @param <T> Type of the class
      * @param className the name of the class.
      * @param loader the class loader.
      * @param params an array containing the parameters of the constructor.
@@ -125,9 +130,11 @@ public interface FactoryService
      * @param clazz the class.
      * @param params an array containing the parameters of the method.
      * @param signature an array containing the signature of the method.
+     * 
      * @return {@inheritDoc} an array of signature classes. Note that in some cases
      * objects in the parameter array can be switched to the context
-     * of a different class loader.
+     * of a different class loader
+     * 
      * @throws ClassNotFoundException if any of the classes is not found.
      */
     Class<?>[] getSignature(Class<?> clazz,
