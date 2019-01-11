@@ -45,8 +45,7 @@ import org.apache.fulcrum.factory.utils.ObjectInputStreamForContext;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:mcconnell@apache.org">Stephen McConnell</a>
- * @version $Id: DefaultFactoryService.java 1844842 2018-10-25 15:33:42Z painter
- *          $
+ * @version $Id$
  *
  */
 public class DefaultFactoryService extends AbstractLogEnabled
@@ -247,7 +246,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws FactoryException if test fails.
 	 */
 	@Override
-	public boolean isLoaderSupported(String className) throws FactoryException {
+	public boolean isLoaderSupported(String className) throws FactoryException 
+	{
 		Factory<?> factory = getFactory(className);
 		return factory != null ? factory.isLoaderSupported() : true;
 	}
@@ -261,7 +261,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws FactoryException if instantiation fails.
 	 */
 	@Override
-	public <T> T getInstance(Class<T> clazz) throws FactoryException {
+	public <T> T getInstance(Class<T> clazz) throws FactoryException 
+	{
 		try {
 			return clazz.newInstance();
 		} catch (Exception x) {
@@ -281,7 +282,9 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @return the instance
 	 * @throws FactoryException if instantiation fails.
 	 */
-	protected <T> T getInstance(Class<T> clazz, Object params[], String signature[]) throws FactoryException {
+	protected <T> T getInstance(Class<T> clazz, Object params[], String signature[]) 
+			throws FactoryException 
+	{
 		/* Try to construct. */
 		try {
 			Class<?>[] sign = getSignature(clazz, params, signature);
@@ -303,7 +306,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * @throws ClassNotFoundException if any of the classes is not found.
 	 */
 	@Override
-	public Class<?>[] getSignature(Class<?> clazz, Object params[], String signature[]) throws ClassNotFoundException 
+	public Class<?>[] getSignature(Class<?> clazz, Object params[], String signature[]) 
+			throws ClassNotFoundException 
 	{
 		if (signature != null) {
 			/* We have parameters. */
@@ -568,7 +572,8 @@ public class DefaultFactoryService extends AbstractLogEnabled
 	 * Avalon component lifecycle method Clear lists and maps
 	 */
 	@Override
-	public void dispose() {
+	public void dispose() 
+	{
 		objectFactories.clear();
 		objectFactoryClasses.clear();
 		classLoaders.clear();

@@ -1,5 +1,7 @@
 package org.apache.fulcrum.factory;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,11 +22,14 @@ package org.apache.fulcrum.factory;
  */
 
 
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 
-import org.apache.fulcrum.testcontainer.BaseUnitTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.apache.fulcrum.testcontainer.BaseUnit5Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * Basic tests of the fulcrum factory service
@@ -34,25 +39,17 @@ import org.junit.Test;
  * 
  * @version $Id$ 
  */
-public class FactoryServiceTest extends BaseUnitTest
+public class FactoryServiceTest extends BaseUnit5Test
 {
+	/** Default factory service **/
     private FactoryService factoryService = null;
-    
-    /**
-     * Defines the testcase name for JUnit.
-     *
-     * @param name the testcase's name.
-     */
-    public FactoryServiceTest(String name)
-    {
-        super(name);
-    }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception
     {
-        super.setUp();
-        factoryService = (FactoryService) this.resolve( FactoryService.class.getName() );
+        setConfigurationFileName("src/test/TestComponentConfig.xml");
+        setRoleFileName("src/test/TestRoleConfig.xml");
+        factoryService = (FactoryService) this.lookup(FactoryService.class.getName());    	
     }
     
     /**
@@ -151,6 +148,6 @@ public class FactoryServiceTest extends BaseUnitTest
         signature[0] = "java.lang.Integer";
         results = factoryService.getSignature(ArrayList.class, params, signature);
         assertEquals(1, results.length);
-        assertTrue("Result:" + results[0].getName(),results[0].equals(Integer.class));
+        assertTrue(results[0].equals(Integer.class));
     }
 }

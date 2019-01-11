@@ -1,5 +1,7 @@
 package org.apache.fulcrum.factory.utils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -23,8 +25,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.fulcrum.testcontainer.BaseUnitTest;
-import org.junit.Test;
+import org.apache.fulcrum.testcontainer.BaseUnit5Test;
+import org.junit.jupiter.api.Test;
+
 
 /**
  * Basic test for object input stream for fulcrum factory
@@ -32,18 +35,8 @@ import org.junit.Test;
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @version $Id$ 
  */
-public class ObjectInputStreamForContextTest extends BaseUnitTest
+public class ObjectInputStreamForContextTest extends BaseUnit5Test
 {
-	 
-    /**
-     * Defines the testcase name for JUnit.
-     *
-     * @param name the testcase's name.
-     */
-    public ObjectInputStreamForContextTest(String name)
-    {
-        super(name);
-    }
 	
     /**
      * 
