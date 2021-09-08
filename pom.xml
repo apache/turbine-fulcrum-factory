@@ -41,9 +41,9 @@
   </distributionManagement>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/turbine/fulcrum/trunk/factory/</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/turbine/fulcrum/trunk/factory/</developerConnection>
-    <url>http://svn.apache.org/viewvc/turbine/fulcrum/trunk/factory/</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/turbine-fulcrum-factory.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/turbine-fulcrum-factory.git</developerConnection>
+    <url>https://gitbox.apache.org/repos/asf/turbine-fulcrum-factory.git</url>
   </scm>
 
   <developers>
