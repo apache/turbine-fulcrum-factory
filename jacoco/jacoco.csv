@@ -1,0 +1,5 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+Fulcrum Factory,org.apache.fulcrum.factory.utils,ObjectInputStreamForContext,16,7,2,0,4,3,3,1,2,1
+Fulcrum Factory,org.apache.fulcrum.factory,DefaultFactoryService,365,300,37,23,74,75,31,17,2,16
+Fulcrum Factory,org.apache.fulcrum.factory,FactoryService,4,0,0,0,1,0,1,0,1,0
+Fulcrum Factory,org.apache.fulcrum.factory,FactoryException,16,0,0,0,8,0,4,0,4,0
