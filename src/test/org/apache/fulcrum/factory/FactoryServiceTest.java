@@ -1,6 +1,7 @@
 package org.apache.fulcrum.factory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -33,11 +34,11 @@ import org.junit.jupiter.api.Test;
 
 /**
  * Basic tests of the fulcrum factory service
- * 
+ *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:mcconnell@apache.org">Stephen McConnell</a>
- * 
- * @version $Id$ 
+ *
+ * @version $Id$
  */
 public class FactoryServiceTest extends BaseUnit5Test
 {
@@ -49,9 +50,9 @@ public class FactoryServiceTest extends BaseUnit5Test
     {
         setConfigurationFileName("src/test/TestComponentConfig.xml");
         setRoleFileName("src/test/TestRoleConfig.xml");
-        factoryService = (FactoryService) this.lookup(FactoryService.class.getName());    	
+        factoryService = (FactoryService) this.lookup(FactoryService.class.getName());
     }
-    
+
     /**
      * Class to test for Object getInstance(String)
      * @throws Exception if factory fails to generate object
@@ -60,9 +61,9 @@ public class FactoryServiceTest extends BaseUnit5Test
     public void testGetInstanceString() throws Exception
     {
         Object object = factoryService.getInstance("java.lang.StringBuilder");
-        assertTrue(object instanceof StringBuilder);
+        assertInstanceOf(StringBuilder.class, object);
     }
-    
+
     /**
      * Class to test for Object getInstance(String, ClassLoader)
      *
@@ -72,9 +73,9 @@ public class FactoryServiceTest extends BaseUnit5Test
     public void testGetInstanceStringClassLoader() throws Exception
     {
         Object object = factoryService.getInstance("java.lang.StringBuilder", StringBuilder.class.getClassLoader());
-        assertTrue(object instanceof StringBuilder);
+        assertInstanceOf(StringBuilder.class, object);
     }
-    
+
     /**
      * Class to test for Object getInstance(String, Object[], String[])
      * @throws Exception Generic exception
@@ -87,15 +88,15 @@ public class FactoryServiceTest extends BaseUnit5Test
         String signature[] = new String[] { "java.lang.String" };
 
         Object object = factoryService.getInstance("java.lang.StringBuilder", params, signature);
-        assertTrue(object instanceof StringBuilder);
+        assertInstanceOf(StringBuilder.class, object);
         assertEquals(sourceValue, object.toString());
     }
-    
+
     /**
      * Class to test for Object getInstance(String, ClassLoader, Object[], String[])
-     * 
+     *
      * @throws Exception Generic exception
-     */    
+     */
     @Test
     public void testGetInstanceStringClassLoaderObjectArrayStringArray() throws Exception
     {
@@ -109,14 +110,14 @@ public class FactoryServiceTest extends BaseUnit5Test
                 StringBuilder.class.getClassLoader(),
                 params,
                 signature);
-        assertTrue(object instanceof StringBuilder);
+        assertInstanceOf(StringBuilder.class, object);
         assertEquals(sourceValue, object.toString());
 
     }
-    
+
     /**
      * Test if the loader is supported
-     * 
+     *
      * @throws Exception Generic exception
      */
     @Test
@@ -125,11 +126,11 @@ public class FactoryServiceTest extends BaseUnit5Test
         // TODO Need to run a test where the loader is NOT supported.
         assertTrue(factoryService.isLoaderSupported("java.lang.String"));
     }
-    
+
 
     /**
      * Test get signature
-     * 
+     *
      * @throws Exception Generic exception
      */
     @Test
@@ -143,7 +144,7 @@ public class FactoryServiceTest extends BaseUnit5Test
         assertEquals(1, results.length);
         assertTrue(results[0].equals(String.class));
 
-        Integer sourceValueInteger = new Integer(10);
+        Integer sourceValueInteger = Integer.valueOf(10);
         params[0] = sourceValueInteger;
         signature[0] = "java.lang.Integer";
         results = factoryService.getSignature(ArrayList.class, params, signature);

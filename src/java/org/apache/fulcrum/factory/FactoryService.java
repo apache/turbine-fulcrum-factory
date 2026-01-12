@@ -27,7 +27,6 @@ package org.apache.fulcrum.factory;
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
- * @version $Id$
  */
 public interface FactoryService
 {
@@ -64,7 +63,7 @@ public interface FactoryService
      *
      * Class loaders are supported only if the isLoaderSupported
      * method returns true. Otherwise the loader parameter is ignored.
-     * 
+     *
      * @param <T> Type of the class
      * @param className the name of the class.
      * @param loader the class loader.
@@ -130,11 +129,11 @@ public interface FactoryService
      * @param clazz the class.
      * @param params an array containing the parameters of the method.
      * @param signature an array containing the signature of the method.
-     * 
+     *
      * @return {@inheritDoc} an array of signature classes. Note that in some cases
      * objects in the parameter array can be switched to the context
      * of a different class loader
-     * 
+     *
      * @throws ClassNotFoundException if any of the classes is not found.
      */
     Class<?>[] getSignature(Class<?> clazz,

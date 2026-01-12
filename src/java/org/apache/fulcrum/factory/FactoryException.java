@@ -23,7 +23,6 @@ package org.apache.fulcrum.factory;
  * Exception thrown when there is a problem with the FactoryService
  *
  * @author <a href="mailto:epugh@upstate.com">Eric Pugh</a>
- * @version $Id$
  */
 public class FactoryException extends Exception {
 	/**
@@ -34,38 +33,38 @@ public class FactoryException extends Exception {
 	/**
 	 * Default constructor
 	 */
-	public FactoryException() 
+	public FactoryException()
 	{
 		super();
 	}
 
 	/**
 	 * {@link java.lang.Exception#Exception(String, Throwable)}
-	 * 
+	 *
 	 * @param message the message
 	 * @param e       the exception
 	 */
-	public FactoryException(String message, Throwable e) 
+	public FactoryException(String message, Throwable e)
 	{
 		super(message, e);
 	}
 
 	/**
 	 * {@link java.lang.Exception#Exception(Throwable)}
-	 * 
+	 *
 	 * @param e the exception to bubble up
 	 */
-	public FactoryException(Throwable e) 
+	public FactoryException(Throwable e)
 	{
 		super(e);
 	}
 
 	/**
 	 * {@link java.lang.Exception#Exception(String)}
-	 * 
+	 *
 	 * @param msg the message to bubble up
 	 */
-	public FactoryException(String msg) 
+	public FactoryException(String msg)
 	{
 		super(msg);
 	}

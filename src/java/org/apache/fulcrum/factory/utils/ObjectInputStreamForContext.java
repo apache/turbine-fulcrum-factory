@@ -1,5 +1,7 @@
 package org.apache.fulcrum.factory.utils;
 
+import java.io.IOException;
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -20,7 +22,6 @@ package org.apache.fulcrum.factory.utils;
  */
 
 import java.io.InputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
@@ -28,7 +29,6 @@ import java.io.ObjectStreamClass;
  * A deserialization stream for a specific class loader context.
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
- * @version $Id$
  */
 public class ObjectInputStreamForContext extends ObjectInputStream
 {
@@ -39,7 +39,7 @@ public class ObjectInputStreamForContext extends ObjectInputStream
 
     /**
      * Required to make satisfy the proxy methods
-     * 
+     *
      * @throws IOException Generic exception
      */
     public ObjectInputStreamForContext()
@@ -64,12 +64,13 @@ public class ObjectInputStreamForContext extends ObjectInputStream
 
     /**
      * {@link java.io.ObjectInputStream#resolveClass(ObjectStreamClass)}
-     * 
+     *
      * @param v ObjectStreamClass to resolve
      * @return {@inheritDoc} class to resolve
      * @throws IOException if object stream not found
      * @throws ClassNotFoundException if class not found
      */
+    @Override
     protected Class<?> resolveClass(ObjectStreamClass v)
                                  throws IOException,
                                  ClassNotFoundException

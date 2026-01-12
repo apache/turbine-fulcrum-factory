@@ -29,7 +29,6 @@ package org.apache.fulcrum.factory;
  *
  * @author <a href="mailto:ilkka.priha@simsoft.fi">Ilkka Priha</a>
  * @author <a href="mailto:mcconnell@apache.org">Stephen McConnell</a>
- * @version $Id$
  */
 public interface Factory<T>
 {
